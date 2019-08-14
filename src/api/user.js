@@ -76,7 +76,7 @@ class User {
   }
   //改变密码
   async changepassword(req,res,next){
-
+       
   }
 
 }
