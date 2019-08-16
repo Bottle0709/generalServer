@@ -1,26 +1,11 @@
 var jwt = require('jsonwebtoken')
 var {paramAll,encryPassword,createSign} = require('../components/common')
-var TOKENSECRET = 'jsonwebtoken20190613150331';
+import config from 'config-lite';
 const mongoose = require('mongoose')
 import UserModel from '../models/user'
 
 class User {
-  //生成token
-  async create_token(req,res,next){
-    var par = paramAll(req)
-    var userInfo = {
-     user_id:par.user_id,
-     username:par.username,
-     password:encryPassword(par.password)
-    }
 
-    var token =jwt.singn(userInfo,TOKENSECRET,{
-        expiresIn:'48h',
-        issuer:'niyueling'
-    })
-
-    return res.json(new PKG(token));
-}
   //登录
    async login(req,res,next){
        var par = paramAll(req)
@@ -38,13 +23,20 @@ class User {
           await User.findOne({username:param.username}).exec().then(async(result)=>{
              if(result){
                 if(result.password.toString() == param.password.toString()){
-                  return res.status(200).json({msg:'登录成功'});
+                  //设置token
+                  let token =jwt.sign(param,config.TOKENSECRET,{
+                       expiresIn:60*60*1, //1小时过期
+                  })
+                  //存入数据库
+
+                  return res.status(200).send({'msg':'登陆成功','token':token,})
+                  
                 }else{
-                  return res.status(201).json({error:'密码不正确'});
+                  return res.status(201).send({msg:'密码不正确'});
                 }
              }
              else{
-              return res.status(201).json({error:'用户不存在'});
+              return res.status(201).json({msg:'用户不存在'});
              }
           }).catch(err=>{
             return res.status(401).json({error:err});

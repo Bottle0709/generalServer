@@ -17,5 +17,6 @@ module.exports = {
             secure:   false,
             maxAge:   365 * 24 * 60 * 60 * 1000,
         }
-    }
+    },
+    TOKENSECRET:'jsonwebtoken20190613150331' //token密钥
 };

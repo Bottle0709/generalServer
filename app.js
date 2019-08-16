@@ -1,18 +1,16 @@
 import express from 'express';
 import config from 'config-lite';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import connectMongo from 'connect-mongo'; //该模块用于将session存入mongo中
+// import cookieParser from 'cookie-parser';
+// import session from 'express-session';
+// import connectMongo from 'connect-mongo'; //该模块用于将session存入mongo中
 import winston from 'winston'; //日志
 import expressWinston from 'express-winston'; //日志中间插件
 import path from 'path';
 // import Statistic from './src/middlewares/statistic';
 import router from './routes/index';
-import db from './src/database/db.js'
 var bodyParser = require('body-parser')
 
-const {initSchemas} = require('./src/database/db.js')
-
+const {db,initSchemas} = require('./src/database/db.js')
 
 const app = express();
 
@@ -32,19 +30,19 @@ app.all('*',(req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// app.use(Statistic.apiRecord);
-const MongoStore = connectMongo(session);
-app.use(cookieParser()); //cookie运用
+// // app.use(Statistic.apiRecord);
+// const MongoStore = connectMongo(session);
+// app.use(cookieParser()); //cookie运用
 
-//session运用
-app.use(session({
-    name: config.session.name,
-    secret: config.session.secret,
-    resave: true,
-    saveUninitialized: false,
-    cookie: config.session.cookie,
-    store: new MongoStore({url: config.url})
-}));
+// //session运用
+// app.use(session({
+//     name: config.session.name,
+//     secret: config.session.secret,
+//     resave: true,
+//     saveUninitialized: false,
+//     cookie: config.session.cookie,
+//     store: new MongoStore({url: config.url})
+// }));
 
 //正确日志
 app.use(expressWinston.logger({
@@ -59,9 +57,6 @@ app.use(expressWinston.logger({
     ]
 }));
 
-//路由
-router(app);
-
 //错误日志
 app.use(expressWinston.errorLogger({
     transports: [
@@ -75,8 +70,15 @@ app.use(expressWinston.errorLogger({
     ]
 }));
 
+//路由
+router(app);
+
 app.use(express.static('./public'));
 app.use((err, req, res, next) => {
+    console.log(err)
+    if(err.name === 'UnauthorizedError'){
+        return res.status(403).send('token失效')
+    }
     res.status(404).send('未找到当前路由');
 });
 

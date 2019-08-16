@@ -11,7 +11,15 @@ const userSchema = new Schema({
   username:{unique:true,type:String},
   password:String,
   createAt:{type:Date, default:Date.now()},
-  lastLoginAt:{type:Date, default:Date.now()}
+  lastLoginAt:{type:Date, default:Date.now()},
+  city: String,
+  avatar: {type: String, default: 'default.jpg'},
+  mobile: {type: String, default: ''},
+  email: {type: String, default: ''},
+  is_active: {type: Number, default: 1},
+	is_email_valid: {type: Boolean, default: false},
+  is_mobile_valid: {type: Boolean, default: true},
+  current_address_id: {type: Number, default: 0},
 },{
   collection:'user'
 })
