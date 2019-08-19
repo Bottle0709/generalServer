@@ -20,7 +20,7 @@ citySchema.statics.cityGuess = function(name){
 						}
 					})
 				}
-			})
+			}) 
 		}catch(err){
 			reject({
 				name: 'ERROR_DATA',

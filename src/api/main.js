@@ -3,8 +3,9 @@ var {paramAll,encryPassword,createSign} = require('../components/common')
 import config from 'config-lite';
 const mongoose = require('mongoose')
 import UserModel from '../models/user'
+import EntryModel from '../models/foodentry'
 
-class User {
+class Main {
 
   //登录
    async login(req,res,next){
@@ -70,7 +71,21 @@ class User {
   async changepassword(req,res,next){
        
   }
-
+   //首页商品分类
+   async getEntry(req, res, next){
+		try{
+			const entries = await EntryModel.find({}, '-_id');
+			res.send(entries);
+		}catch(err){
+			console.log('获取数据失败');
+			res.send({
+				status: 201,
+				type: 'ERROR_DATA',
+				message: '获取数据失败'
+			})
+			return
+		}
+	}
 }
 
-export default new User()
+export default new Main()

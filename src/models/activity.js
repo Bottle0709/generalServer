@@ -5,25 +5,21 @@ import activityData from '../../InitData/activity'
 
 const Schema = mongoose.Schema;
 
-const activitySchema = new Schema({
-	description: String,
-	icon_color: String,
-	icon_name: String,
+const ActivitySchema = new Schema({
+	color: String,
 	id: Number,
-	name: String,
-	ranking_weight: Number
+	is_solid: Boolean,
+	text: String
 })
 
-activitySchema.index({index: 1});
+ActivitySchema.index({id: 1});
 
-const Activity = mongoose.model('Activity', activitySchema);
+const Activity = mongoose.model('Activity', ActivitySchema);
 
 Activity.findOne((err, data) => {
 	if (!data) {
-		activityData.forEach(item => {
-			Activity.create(item);
-		})
+		Activity.create(activityData);
 	}
-})
+}) 
 
 export default Activity

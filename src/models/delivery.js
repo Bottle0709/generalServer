@@ -5,21 +5,25 @@ import deliveryData from '../../InitData/delivery'
 
 const Schema = mongoose.Schema;
 
-const DeliverySchema = new Schema({
-	color: String,
+const deliverySchema = new Schema({
+	description: String,
+	icon_color: String,
+	icon_name: String,
 	id: Number,
-	is_solid: Boolean,
-	text: String
+	name: String,
+	ranking_weight: Number
 })
 
-DeliverySchema.index({id: 1});
+deliverySchema.index({index: 1});
 
-const Delivery = mongoose.model('Delivery', DeliverySchema);
+const Delivery = mongoose.model('Delivery', deliverySchema);
 
 Delivery.findOne((err, data) => {
 	if (!data) {
-		Delivery.create(deliveryData);
+		deliveryData.forEach(item => {
+			Delivery.create(item);
+		})
 	}
-})
+}) 
 
 export default Delivery

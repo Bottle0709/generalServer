@@ -1,17 +1,21 @@
 'user strict'
 import config from 'config-lite';
 var expressJwt = require('express-jwt');
-import personalcenter from './users'
+import Main from './main'
+import Map from './map'
+import Shop from './shop'
 
 export default app =>{
    
    //验证token是否过期并规定哪些路由不用验证
-   app.use(expressJwt({
-	    secret: config.TOKENSECRET
-      }).unless({
-	     path: ['/personalcenter/login']//除了这个地址，其他的URL都需要验证
-   }));
+   // app.use(expressJwt({
+	//     secret: config.TOKENSECRET
+   //    }).unless({
+	//      path: ['/main/login','/map/cities','/map/cities/:id','/map/pois',]//除了这个地址，其他的URL都需要验证
+   // }));
+   app.use('/main',Main)
+   app.use('/map',Map)
+   app.use('/shop',Shop)
+   //app.use('/personalcenter',personalcenter)
    
-   app.use('/personalcenter',personalcenter)
-
 }
