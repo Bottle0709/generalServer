@@ -3,8 +3,12 @@
 import CategoryModel from '../models/category'
 import ActivityModel from '../models/activity'
 import DeliveryModel from '../models/delivery'
+import BaseComponent from '../components/baseComponent'
 
-class Category {
+class Category extends BaseComponent{
+   constructor(){
+     super()
+   }
    //获取分类
    async getCategories(req,res,next){
       try{
@@ -19,6 +23,21 @@ class Category {
         })
       }
    }
+   async findById(id){
+		try{
+			const CateEntity = await CategoryModel.findOne({'sub_categories.id': id});
+			let categoName = CateEntity.name;
+			CateEntity.sub_categories.forEach(item => {
+				if (item.id == id) {
+					categoName += '/' + item.name;
+				}
+			})
+			return categoName
+		}catch(err){
+			console.log('通过category id获取数据失败')
+			throw new Error(err)
+		}
+	}
    //获取商家服务
    async getDelivery(req,res,next){
      try{

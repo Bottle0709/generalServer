@@ -35,12 +35,7 @@ class Shop extends AddressComponent{
 			}
 		}catch(err){
 			console.log('latitude,longitude参数错误');
-			res.send({
-				status: 0,
-				type: 'ERROR_PARAMS',
-				message: err.message
-			})
-			return
+			return res.status(400).json({type: 'ERROR_PARAMS',message: err.message});
 		}
 		let filter = {};
 		//获取对应食品种类
@@ -185,7 +180,7 @@ class Shop extends AddressComponent{
 			return
 		}
 		
-		try{
+		try{ 
 			const restaurants = await ShopModel.find({name: eval('/' + keyword + '/gi')}, '-_id').limit(50);
 			if (restaurants.length) {
 				const [latitude, longitude] = geohash.split(',');
@@ -205,11 +200,7 @@ class Shop extends AddressComponent{
 			res.send(restaurants);
 		}catch(err){
 			console.log('搜索餐馆数据失败');
-			res.send({
-				status: 0,
-				type: 'ERROR_DATA',
-				message: '搜索餐馆数据失败'
-			})
+		  res.status(201).send({type: 'ERROR_DATA',message: '搜索餐馆数据失败'});
 		}
 	}
 }

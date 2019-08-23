@@ -18,4 +18,4 @@ router.get('/:shop_id/ratings', Rating.getRatings)
 router.get('/:shop_id/ratings/scores', Rating.getScores)
 router.get('/:shop_id/ratings/tags', Rating.getTags)
 
-export default router
+export default router 

@@ -11,4 +11,4 @@ router.get('/cities/:id',CityHandle.getCityById)
 router.get('/pois', SearchPlace.search);
 router.get('/pois/:geohash', CityHandle.pois);
 
-export default router
+export default router 
