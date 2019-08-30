@@ -4,6 +4,7 @@ var expressJwt = require('express-jwt');
 import Main from './main'
 import Map from './map'
 import Shop from './shop'
+import Profile from './profile'
 
 export default app =>{
    
@@ -16,6 +17,7 @@ export default app =>{
    app.use('/main',Main)
    app.use('/map',Map)
    app.use('/shop',Shop)
+   app.use('/profile',Profile)
    //app.use('/personalcenter',personalcenter)
    
 }

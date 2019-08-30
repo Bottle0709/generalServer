@@ -8,6 +8,5 @@ router.get('/signout',Main.signout)
 router.post('/register',Main.register)
 router.get('/changepassword',Main.changepassword)
 router.get('/index_entry',Main.getEntry)
-router.get('/index_entry',Main.getEntry)
 
 export default router

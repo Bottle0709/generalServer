@@ -25,7 +25,7 @@ const shopSchema = new mongoose.Schema({
 	float_delivery_fee: { type: Number, default: 0 },
 	float_minimum_order_amount: { type: Number, default: 0 },
 	id: Number,
-	category: String,
+	category: String, 
 	identification: {
 		company_name: { type: String, default: "" },
 		identificate_agency: { type: String, default: "" },
