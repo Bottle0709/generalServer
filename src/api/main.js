@@ -4,13 +4,23 @@ import config from 'config-lite';
 const mongoose = require('mongoose')
 import UserModel from '../models/user'
 import EntryModel from '../models/foodentry'
+import captchapng from 'captchapng';
 
 class Main {
-
+  //生成验证码
+  async captcha(req,res,next){
+    var captchacode = parseInt(Math.random() * 9000 + 1000);
+    var p = new captchapng(100, 30, captchacode);
+    p.color(0, 0, 0, 0);
+    p.color(80, 80, 80, 255);
+    var imgbase64 = p.getBase64();
+    res.cookie('captcha',captchacode,{maxAge:3600000,httpOnly:true})
+    res.send({status:200,captchacode:'data:image/png;base64,'+imgbase64})
+  }
   //登录
    async login(req,res,next){
        var par = paramAll(req)
-
+       
        //加密生成签名sign
        var param = createSign({
         user_id:par.user_id,
@@ -18,7 +28,11 @@ class Main {
         password:encryPassword(par.password)
        }, 'niyueling111222333')
 
-       if(param.singn == param.singn){
+       if(par.captcha != req.session.captcha){
+
+          res.status(400).send({message:'验证码错误'})
+
+       }else if(param.singn == param.singn){
            //签名验证成功，数据库验证账号密码是否匹配
           const User = mongoose.model('User')
           await User.findOne({username:param.username}).exec().then(async(result)=>{
@@ -67,6 +81,7 @@ class Main {
         return res.status(201).json({msg:'该用户已存在'});
     }
   }
+  
   //改变密码
   async changepassword(req,res,next){
        

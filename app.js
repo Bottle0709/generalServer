@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config-lite';
 // import cookieParser from 'cookie-parser';
-// import session from 'express-session';
+import session from 'express-session';
 // import connectMongo from 'connect-mongo'; //该模块用于将session存入mongo中
 import winston from 'winston'; //日志
 import expressWinston from 'express-winston'; //日志中间插件
