@@ -39,7 +39,7 @@
     "formidable": "^1.2.1",
     "log4js": "^1.0.0",
     "mongodb": "^2.2.25",
-    "mongoose": "^4.9.3",
+    "mongoose": "^5.7.8",
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.1",
     "pinyin": "^2.9.0",
